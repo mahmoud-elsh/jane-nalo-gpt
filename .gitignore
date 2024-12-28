@@ -1,0 +1,16 @@
+venv/
+.env
+.idea/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+Thumbs.db
+deepwoken_wiki
+deepwoken_wiki.7z
+parser/NotoSansAdlam-Regular.cw127.pkl
+parser/NotoSansAdlam-Regular.pkl
+parser/output.pdf
+parser/output2.pdf
+chunks_and_embeddings/chunks.json
+chunks_and_embeddings/embeddings.npy
