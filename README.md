@@ -28,12 +28,20 @@ pip install -r requirements.txt
 cd parser
 python parse_script.py
 ```
-*Move output2.pdf to chunks_and_embeddings directory*
+
 ```
-cd chunks_and_embeddings
+mv output2.pdf ../chunks_and_embeddings
+```
+
+```
+cd ../chunks_and_embeddings
 python chunk_splitter.py
 ```
-*Move embeddings.npy to main directory*
+
+```
+mv embeddings.npy ../
+```
+
 ### Step 5: Run Main File
 *Put the required discord bot token and OpenAi API key in .env file or in IDE of your choice*
 ```
