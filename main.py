@@ -1,10 +1,10 @@
 from sentence_transformers import SentenceTransformer
-import numpy as np
 import json
 import openai
 import os
 import discord
 import time
+import faiss
 
 user_cooldowns = {}
 
@@ -41,18 +41,17 @@ async def on_message(message):
     print(message.content)
     if message.content.startswith("!question"):
         user_query = message.content[len("!question "):]
-        closest_chunk = find_closest_chunk(user_query)
+        closest_chunk = find_closest_chunk(user_query, index)
         response = gpt_response(user_query, closest_chunk, messages)
         await message.channel.send(response)
 
 
-def find_closest_chunk(query):
+def find_closest_chunk(query, index):
     query_embedding = model.encode([query])
 
-    distances = np.linalg.norm(embeddings - query_embedding, axis=1)
-
-    closest_index = np.argmin(distances)
-    return chunks[closest_index]
+    distances, indices = index.search(query_embedding, 1)
+    chunk = chunks[indices[0][0]]
+    return chunk
 
 
 def gpt_response(query, chunk, messages):
@@ -83,8 +82,8 @@ def gpt_response(query, chunk, messages):
     messages.append({"role": "assistant", "content": assistant_reply})
     return assistant_reply
 
-embeddings = np.load("embeddings.npy")
 model = SentenceTransformer("all-MiniLM-L6-v2")
+index = faiss.read_index("faiss_db.bin")
 
 with open("chunks.json", "r") as f:
     chunks = json.load(f)

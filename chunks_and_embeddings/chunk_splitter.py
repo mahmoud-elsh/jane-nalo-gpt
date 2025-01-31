@@ -1,7 +1,7 @@
 from PyPDF2 import PdfReader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer
-import numpy as np
+import faiss
 import json
 
 
@@ -28,8 +28,10 @@ def create_vector_embeddings():
         chunks = json.load(file)
 
     embeddings = model.encode(chunks)
-
-    np.save("embeddings.npy", embeddings)
+    index = faiss.IndexFlatL2(embeddings.shape[1])
+    index.add(embeddings)
+    faiss.write_index(index, "faiss_db.bin")
+    print("Successfully saved FAISS DB")
 
 
 input = "output2.pdf"
