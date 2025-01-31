@@ -39,7 +39,8 @@ python chunk_splitter.py
 ```
 
 ```
-mv embeddings.npy ../
+mv faiss_db.bin ../
+mv chunks.json ../
 ```
 
 ### Step 5: Run Main File
